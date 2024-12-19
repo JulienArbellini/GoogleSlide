@@ -8,7 +8,7 @@
 .add-docs {
     height: 40px;
     width: 200px;
-    background-color: #ffc107;
+    /* background-color: #ffc107; */
     border: none;
     cursor: pointer;
     font-family: 'Poppins', sans-serif;
@@ -40,12 +40,14 @@
 
 .grid-child {
     padding: 20px;
-    background-color: rgb(98, 98, 98);
+    background-color: #0C6EFD;
     width: 300px;
+    border-radius: 5px;
     cursor: pointer;
 }
 
 .editDocs-main {
+    width: 50%;
     font-family: 'Poppins', sans-serif;
     padding: 20px;
     display: flex;
@@ -65,4 +67,179 @@
 
 .ql-container.ql-snow {
     border: none !important;
+}
+
+.container-content{
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    /* background-color: red; */
+}
+
+.editDocs-main{
+    display: flex;
+    width: 75%;
+    height: 100%;
+    padding: 0px;
+    /* background-color: red; */
+}
+.editDocs-inner{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    box-shadow: none;
+    border-top: #67676763 solid 1px;
+}
+
+
+
+.presentation-top{
+    /* background-color: red; */
+    display: flex;
+    width: 100%;
+    height: 15%;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+.diaporama{
+    display: flex;
+    width: 100px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 5px;
+    background-color: #0C6EFD;
+    cursor: pointer;
+    text-decoration: none;
+    color: rgb(224, 223, 223);
+}
+
+.diaporama:hover{
+    background-color: #0C6EFD;
+    color: white;
+    text-decoration: none;
+}
+
+
+
+
+
+
+
+.title-presentation{
+    display: flex;
+    width: 80%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #ffc107; */
+}
+.button-presentation{
+    display: flex;
+    width: 20%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #ff2807; */
+}
+
+.button-slide{
+    display: flex;
+    width: 20%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #ff2807; */
+}
+
+.add-slide{
+    display: flex;
+    width: 150px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 5px;
+    background-color: #0C6EFD;
+    cursor: pointer;
+    text-decoration: none;
+    color: rgb(224, 223, 223);
+}
+
+
+/* Conteneur des miniatures */
+
+.presentation-container-side {
+    width: 250px; /* Largeur fixe */
+    height: 100%; /* Prend toute la hauteur visible */
+    padding: 10px;
+    border-right: 1px solid #ddd;
+    background-color: #f9f9f9;
+    overflow-y: scroll; /* Permet le scroll vertical */
+    overflow-x: hidden; /* Évite tout débordement horizontal */
+
+}
+
+
+/* Miniature des slides */
+.mini-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 150px;
+    width: 100%;
+    margin-bottom: 1.5em;
+    background-color: #ffffff; /* Fond blanc */
+    border: 1px solid #d1d1d1; /* Bordure subtile */
+    border-radius: 8px; /* Coins légèrement arrondis */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    overflow: hidden; /* Empêche les débordements */
+}
+
+/* Effet au survol pour les miniatures */
+.mini-slide:hover {
+    transform: scale(1.02); /* Effet zoom léger */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #f9f9f9;
+}
+
+/* Contenu textuel ou prévisualisation */
+.mini-slide p {
+    font-size: 0.9rem;
+    color: #333;
+    margin: 0;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+.editDocs-inner {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #fff;
+    overflow: auto;
+}
+
+.mini-slide.active-slide {
+    border: 2px solid #4285F4; /* Bordure bleue pour une surbrillance visible */
+    box-shadow: 0 0 10px rgba(66, 133, 244, 0.5); /* Ombre pour mettre en évidence */
+    transform: scale(1.05); /* Agrandissement léger pour un effet visuel */
+    transition: all 0.2s ease-in-out; /* Animation douce */
+}
+
+.tiptap {
+    min-height: 300px;
+    font-size: 1rem;
+    line-height: 1.5;
+    outline: none;
 }

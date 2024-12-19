@@ -1,82 +1,71 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Modal from './Modal';
-import {
-    addDoc,
-    collection,
-    onSnapshot
-} from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { addDoc, collection, onSnapshot } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import { db } from "../firebaseConfig";
+import { UserContext } from "../context/userContext";
+import "../Docs.css";
 
-export default function Docs({
-    database
-}) {
-    let navigate = useNavigate();
-    const isMounted = useRef()
-    const [open, setOpen] = React.useState(false);
-    const [docsData, setDocsData] = useState([]);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    const [title, setTitle] = useState('');
-    const collectionRef = collection(database, 'docsData')
-    const addData = () => {
-        addDoc(collectionRef, {
-            title: title,
-            docsDesc: ''
-        })
-            .then(() => {
-                alert('Data Added');
-                handleClose()
-            })
-            .catch(() => {
-                alert('Cannot add data')
-            })
+export default function Docs() {
+  const navigate = useNavigate();
+  const isMounted = useRef();
+  const { currentUser } = useContext(UserContext);
+  const [docsData, setDocsData] = useState([]);
+  const [title, setTitle] = useState("");
+
+  const collectionRef = currentUser
+    ? collection(db, "users", currentUser.uid, "presentations")
+    : null;
+
+  // Récupération des présentations
+  useEffect(() => {
+    if (collectionRef) {
+      const unsubscribe = onSnapshot(collectionRef, (snapshot) => {
+        setDocsData(
+          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        );
+      });
+      return () => unsubscribe();
     }
-    const getData = () => {
-        onSnapshot(collectionRef, (data) => {
-            setDocsData(data.docs.map((doc) => {
-                return { ...doc.data(), id: doc.id }
-            }))
-        })
+  }, [currentUser]);
+
+  // Navigation vers EditDocs
+  const handleNavigate = (id) => {
+    navigate(`/editDocs/${id}`);
+  };
+
+  // Ajout d'une nouvelle présentation
+  const addData = async () => {
+    if (collectionRef) {
+      const title = prompt("Entrez le nom de la nouvelle présentation :", "Nouvelle présentation");
+      if (title !== null && title.trim() !== "") {
+        await addDoc(collectionRef, { title, docsDesc: "", createdAt: new Date() });
+      }
     }
+  };
 
-    const getID = (id) => {
-        navigate(`/editDocs/${id}`)
-    }
-    useEffect(() => {
-        if (isMounted.current) {
-            return
-        }
-
-        isMounted.current = true;
-        getData()
-    }, [])
-    return (
-        <div className='docs-main'>
-            <h1>Docs Clone</h1>
-
-            <button
-                className='add-docs'
-                onClick={handleOpen}
+  return (
+    <div className="docs-container">
+      <header className="docs-header">
+        <h1>Vos présentations</h1>
+        <button className="add-docs-btn" onClick={addData}>
+          + Nouvelle présentation
+        </button>
+      </header>
+      <div className="docs-grid">
+        {docsData.length > 0 ? (
+          docsData.map((doc) => (
+            <div
+              key={doc.id}
+              className="docs-card"
+              onClick={() => handleNavigate(doc.id)}
             >
-                Add a Document
-            </button>
-            <div className='grid-main'>
-                {docsData.map((doc) => {
-                    return (
-                        <div className='grid-child' onClick={() => getID(doc.id)}>
-                            <p>{doc.title}</p>
-                            <div dangerouslySetInnerHTML={{ __html: doc.docsDesc }} />
-                        </div>
-                    )
-                })}
+              <h2 className="docs-title">{doc.title || "Sans titre"}</h2>
             </div>
-            <Modal
-                open={open}
-                setOpen={setOpen}
-                title={title}
-                setTitle={setTitle}
-                addData={addData}
-            />
-        </div>
-    )
+          ))
+        ) : (
+          <p className="no-docs">Aucune présentation trouvée.</p>
+        )}
+      </div>
+    </div>
+  );
 }
